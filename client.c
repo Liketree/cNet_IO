@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <unistd.h>
 
 #define DEFAULT_IP        "127.0.0.1"
 #define DEFAULT_PORT    6666
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
     {
 
         int num = send(cliSocket, sendbuf, strlen(sendbuf)+1, 0);
-        if(num == strlen(sendbuf)+1)
+        if(num == (int)strlen(sendbuf)+1)
             printf("Send: Hello Server, I am Client.\nlength:%d\n\n",num);
         else
             printf("send err\n");
