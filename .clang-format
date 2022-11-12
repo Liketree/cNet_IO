@@ -1,0 +1,32 @@
+BasedOnStyle: WebKit
+PointerAlignment: Left
+AccessModifierOffset: -4
+IndentWidth: 4
+MaxEmptyLinesToKeep: 1
+# BreakBeforeBraces: Attach
+BreakBeforeBraces: WebKit
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: false
+  SplitEmptyFunction: false
+  AfterFunction:   true
+  BeforeElse: false
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AlignAfterOpenBracket: true
+IndentCaseLabels: true
+ObjCBlockIndentWidth: 4
+ObjCSpaceAfterProperty: true
+ColumnLimit: 80
+AlignTrailingComments: true
+SpaceAfterCStyleCast: false
+AlignOperands: true
+SpacesInSquareBrackets: false
+AlignConsecutiveDeclarations: false
+SpacesInContainerLiterals: false
+BreakConstructorInitializersBeforeComma: true
+AllowAllParametersOfDeclarationOnNextLine: true
+ContinuationIndentWidth: 4
+TabWidth: 4
+SpaceBeforeAssignmentOperators: true
+SpacesBeforeTrailingComments: 1

@@ -6,27 +6,26 @@
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 
-#define BACKLOG 5
-#define BUFF_SIZE 200
+#define BACKLOG      5
+#define BUFF_SIZE    200
 #define DEFAULT_PORT 6666
-#define MAX_EVENTS 10
+#define MAX_EVENTS   10
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     int SERVER_PORT = DEFAULT_PORT;
 
     if (argc > 2)
         printf("param err:\nUsage:\n\t%s port | %s\n\n", argv[0], argv[0]);
-    if (argc == 2)
-        SERVER_PORT = atoi(argv[1]);
+    if (argc == 2) SERVER_PORT = atoi(argv[1]);
 
     int nbytes;
     char buffer[BUFF_SIZE];
 
     int servSocket, cliSocket;
     socklen_t addrLen = 0;
-    struct sockaddr_in servAddr = {0};
-    struct sockaddr_in cliAddr = {0};
+    struct sockaddr_in servAddr = { 0 };
+    struct sockaddr_in cliAddr = { 0 };
 
     struct epoll_event ev, readyEvents[MAX_EVENTS];
     int nfds, epollfd;
@@ -37,7 +36,9 @@ int main(int argc, char *argv[])
     }
 
     int optval = 1;
-    if (setsockopt(servSocket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+    if (setsockopt(servSocket, SOL_SOCKET, SO_REUSEADDR, &optval,
+                   sizeof(optval))
+        < 0) {
         perror("setsockopt");
         exit(0);
     }
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
     servAddr.sin_port = htons(SERVER_PORT);
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (bind(servSocket, (struct sockaddr *)&servAddr, sizeof(servAddr)) < 0) {
+    if (bind(servSocket, (struct sockaddr*)&servAddr, sizeof(servAddr)) < 0) {
         perror("bind");
         exit(1);
     }
@@ -83,7 +84,8 @@ int main(int argc, char *argv[])
         for (int n = 0; n < nfds; n++) {
             // 有新连接到来了
             if (readyEvents[n].data.fd == servSocket) {
-                cliSocket = accept(servSocket, (struct sockaddr *)&cliAddr, &addrLen);
+                cliSocket
+                    = accept(servSocket, (struct sockaddr*)&cliAddr, &addrLen);
                 if (cliSocket == -1) {
                     perror("accept");
                     exit(1);
@@ -92,7 +94,7 @@ int main(int argc, char *argv[])
                 printf("\nNew client connections client[%d] %s:%d\n", cliSocket,
                        inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
 
-                ev.events = EPOLLIN | EPOLLET;  // 设置关心可读状态和边缘触发模式
+                ev.events = EPOLLIN | EPOLLET; // 设置关心可读状态和边缘触发模式
                 ev.data.fd = cliSocket;
                 // 把心连接描述符加到epoll实例感兴趣列表
                 if (epoll_ctl(epollfd, EPOLL_CTL_ADD, cliSocket, &ev) == -1) {
